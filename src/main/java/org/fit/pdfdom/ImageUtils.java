@@ -18,16 +18,8 @@ class ImageUtils
         // Translation adjustments so image still centered after rotate width/height changes
         if (image.getHeight() != image.getWidth() && degrees != 180 && degrees != 0)
         {
-            Point2D origin = new Point2D.Double(0.0, 0.0);
-            origin = rotateTransform.transform(origin, null);
-            double yTranslate = origin.getY();
-
-            Point2D yMax = new Point2D.Double(0, image.getHeight());
-            yMax = rotateTransform.transform(yMax, null);
-            double xTranslate = yMax.getX();
-
-            AffineTransform translationAdjustment = AffineTransform.getTranslateInstance(-xTranslate, -yTranslate);
-            rotateTransform.preConcatenate(translationAdjustment);
+            double offset = (image.getWidth() - image.getHeight()) / 2;
+            rotateTransform.translate(-offset, -offset);
         }
 
         AffineTransformOp op = new AffineTransformOp(rotateTransform, AffineTransformOp.TYPE_BILINEAR);
